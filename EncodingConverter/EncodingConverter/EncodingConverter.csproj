@@ -105,10 +105,11 @@
     <EmbeddedResource Include="VSPackage.resx">
       <MergeWithCTO>true</MergeWithCTO>
       <ManifestResourceName>VSPackage</ManifestResourceName>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\EncodingConverter.png" />
+    <Content Include="Resources\Caphyon.ico" />
     <Content Include="Resources\EncodingConverterPackage.ico" />
   </ItemGroup>
   <ItemGroup>

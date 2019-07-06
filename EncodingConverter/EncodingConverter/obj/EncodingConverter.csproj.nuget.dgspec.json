@@ -1,21 +1,21 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Vasilescu Rodica\\Desktop\\EncodingConverter\\EncodingConverter\\EncodingConverter.csproj": {}
+    "C:\\Users\\Rodica\\Documents\\GitHub\\Encoding Converter\\EncodingConverter\\EncodingConverter\\EncodingConverter.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Vasilescu Rodica\\Desktop\\EncodingConverter\\EncodingConverter\\EncodingConverter.csproj": {
+    "C:\\Users\\Rodica\\Documents\\GitHub\\Encoding Converter\\EncodingConverter\\EncodingConverter\\EncodingConverter.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Vasilescu Rodica\\Desktop\\EncodingConverter\\EncodingConverter\\EncodingConverter.csproj",
+        "projectUniqueName": "C:\\Users\\Rodica\\Documents\\GitHub\\Encoding Converter\\EncodingConverter\\EncodingConverter\\EncodingConverter.csproj",
         "projectName": "EncodingConverter",
-        "projectPath": "C:\\Users\\Vasilescu Rodica\\Desktop\\EncodingConverter\\EncodingConverter\\EncodingConverter.csproj",
-        "packagesPath": "C:\\Users\\Vasilescu Rodica\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Vasilescu Rodica\\Desktop\\EncodingConverter\\EncodingConverter\\obj\\",
+        "projectPath": "C:\\Users\\Rodica\\Documents\\GitHub\\Encoding Converter\\EncodingConverter\\EncodingConverter\\EncodingConverter.csproj",
+        "packagesPath": "C:\\Users\\Rodica\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Rodica\\Documents\\GitHub\\Encoding Converter\\EncodingConverter\\EncodingConverter\\obj\\",
         "projectStyle": "PackageReference",
         "skipContentFileWrite": true,
         "configFilePaths": [
-          "C:\\Users\\Vasilescu Rodica\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Rodica\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [

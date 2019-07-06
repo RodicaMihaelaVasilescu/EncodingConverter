@@ -96,38 +96,20 @@ namespace EncodingConverter
         /// <param name="e">Event args.</param>
         private async void Execute(object sender, EventArgs e)
         {
-            //ThreadHelper.ThrowIfNotOnUIThread();
-
             var dte = (DTE2)await ServiceProvider.GetServiceAsync(typeof(DTE));
-            //string file = GetSelectedFile(dte);
-
             string solutionDir = Path.GetDirectoryName(dte.Solution.FullName);
-            //ConvertFiles(solutionDir);
 
-            // dte.ExecuteCommand("Tools.DiffFiles", $"\"{file}\" \"{file}\"");
-            // string message = string.Format(CultureInfo.CurrentCulture, "Inside {0}.MenuItemCallback()", this.GetType().FullName);
-            string title = "EncodingConverter";
-
-            // Show a message box to prove we were here
-            //VsShellUtilities.ShowMessageBox(
-            //    this.package,
-            //    file,
-            //    title,
-            //    OLEMSGICON.OLEMSGICON_INFO,
-            //    OLEMSGBUTTON.OLEMSGBUTTON_OK,
-            //    OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
             var encodingConverterViewModel = new EncodingConverterViewModel(GetSelectedFile(dte));
-
             encodingConverterViewModel.LoadData();
 
-            var confirmationCodeWindow = WindowManager.CreateElementWindow(encodingConverterViewModel, "Encoding Converter", "EncodingConverter.View.EncodingConverterControl");
+            var EncodingConverterWindow = WindowManager.CreateElementWindow(encodingConverterViewModel, "Encoding Converter", "EncodingConverter.View.EncodingConverterControl");
 
             if (encodingConverterViewModel.CloseAction == null)
             {
-                encodingConverterViewModel.CloseAction = () => confirmationCodeWindow.Close();
+                encodingConverterViewModel.CloseAction = () => EncodingConverterWindow.Close();
             }
 
-            confirmationCodeWindow.Show();
+            EncodingConverterWindow.Show();
         }
         private string GetSelectedFile(DTE2 dte)
         {

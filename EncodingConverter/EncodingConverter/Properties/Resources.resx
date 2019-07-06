@@ -138,4 +138,7 @@
   <data name="UTF8Encoding" xml:space="preserve">
     <value>Unicode (UTF-8)</value>
   </data>
+  <data name="UTF32Encoding" xml:space="preserve">
+    <value>Unicode (UTF-32)</value>
+  </data>
 </root>

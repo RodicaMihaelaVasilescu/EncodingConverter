@@ -16,9 +16,8 @@ namespace EncodingConverter.Helper
             window.Title = title;
             window.Background = Brushes.White;
             window.Foreground = Brushes.Black;
-            window.Height = 300;
+            window.SizeToContent = SizeToContent.Height;
             window.Width = 400;
-            window.WindowState = WindowState.Normal;
             window.ResizeMode = ResizeMode.NoResize;
             window.WindowStartupLocation = WindowStartupLocation.CenterScreen;
 

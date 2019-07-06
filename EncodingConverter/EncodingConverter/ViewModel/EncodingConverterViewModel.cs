@@ -1,34 +1,41 @@
 ﻿using EncodingConverter.Model;
 using EncodingConverter.Properties;
-using EnvDTE;
-using EnvDTE80;
 using GalaSoft.MvvmLight.Command;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace EncodingConverter.ViewModel
 {
-    class EncodingConverterViewModel
+    class EncodingConverterViewModel : INotifyPropertyChanged
     {
-        public ObservableCollection<EncodingModel> EncodingCollection { get; set; }
-        public Action CloseAction { get; set; }
-
-        private string fileName;
-
-        private byte[] fileData;
-
+        private readonly string fileName;
         private Encoding fileEncoding;
+        private EncodingModel _selectedEncoding;
 
-        private int markerLength;
-        public string EncodingText { get; set; }
+        public string CurrentEncodingText { get; set; }
+        public ObservableCollection<EncodingModel> EncodingCollection { get; set; }
         public ICommand CancelCommand { get; set; }
         public ICommand ConvertCommand { get; set; }
+
+        public EncodingModel SelectedEncoding
+        {
+            get { return _selectedEncoding; }
+            set
+            {
+                if (_selectedEncoding == value) return;
+                _selectedEncoding = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("SelectedEncoding"));
+            }
+        }
+        public Action CloseAction { get; set; }
+
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public EncodingConverterViewModel(string selectedFile)
         {
@@ -42,21 +49,24 @@ namespace EncodingConverter.ViewModel
             ConvertCommand = new RelayCommand(ConvertCommandExecute);
 
             fileEncoding = FindEncoding(fileName);
-           
-            EncodingText = string.Format("Current Encoding: {0}", fileEncoding != null ? fileEncoding.EncodingName : "unindentified");
+
+            CurrentEncodingText = string.Format("Current Encoding: {0}", fileEncoding != null ? fileEncoding.EncodingName : "unindentified");
 
             InitializeEncodingList();
         }
 
         private void InitializeEncodingList()
         {
-            EncodingCollection = new ObservableCollection<EncodingModel>();
+            EncodingCollection = new ObservableCollection<EncodingModel>
+            {
+                //new EncodingModel { EncodingName = Resources.UTF7Encoding, Encoding = Encoding.UTF7 },
+                new EncodingModel { EncodingName = Resources.UTF8Encoding, Encoding = Encoding.UTF8 },
+                new EncodingModel { EncodingName = Resources.UnicodeEncoding, Encoding = Encoding.Unicode },
+                new EncodingModel { EncodingName = Resources.BigEndianUnicodeEncoding, Encoding = Encoding.BigEndianUnicode },
+                //new EncodingModel { EncodingName = Resources.UTF32Encoding, Encoding = Encoding.UTF32 }
+            };
 
-            EncodingCollection.Add(new EncodingModel { IsSelected = fileEncoding == Encoding.UTF7, EncodingName = Resources.UTF7Encoding, Encoding = Encoding.UTF7});
-            EncodingCollection.Add(new EncodingModel { IsSelected = fileEncoding == Encoding.UTF8, EncodingName = Resources.UTF8Encoding, Encoding = Encoding.UTF8});
-            EncodingCollection.Add(new EncodingModel { IsSelected = fileEncoding == Encoding.Unicode, EncodingName = Resources.UnicodeEncoding, Encoding = Encoding.Unicode });
-            EncodingCollection.Add(new EncodingModel { IsSelected = fileEncoding == Encoding.BigEndianUnicode, EncodingName = Resources.BigEndianUnicodeEncoding, Encoding = Encoding.BigEndianUnicode });
-            EncodingCollection.Add(new EncodingModel { IsSelected = fileEncoding == Encoding.ASCII, EncodingName = Resources.AsciiEncoding, Encoding = Encoding.ASCII });
+            SelectedEncoding = EncodingCollection.FirstOrDefault(e => e.Encoding == fileEncoding);
         }
 
         private void CancelCommandExecute()
@@ -67,19 +77,23 @@ namespace EncodingConverter.ViewModel
         private void ConvertCommandExecute()
         {
             ConvertFile();
+            CancelCommandExecute();
         }
 
         private void ConvertFile()
         {
-            //Encoding fileEncoding = FindEncoding(file);
-
-            if (fileEncoding != null)
+            if (SelectedEncoding == null || SelectedEncoding.Encoding == fileEncoding)
             {
-                byte[] strippedBytes = new byte[fileData.Length - markerLength];
-                Buffer.BlockCopy(fileData, markerLength, strippedBytes, 0, strippedBytes.Length);
-                byte[] convertedBytes = Encoding.Convert(fileEncoding, Encoding.UTF8, strippedBytes);
-                File.WriteAllBytes(fileName, convertedBytes);
+                return;
             }
+
+            StreamReader streamReader = new StreamReader(fileName);
+            string fileContent = streamReader.ReadToEnd();
+            streamReader.Close();
+
+            StreamWriter streamWriter = new StreamWriter(fileName, false, SelectedEncoding.Encoding);
+            streamWriter.Write(fileContent);
+            streamWriter.Close();
         }
 
         private Encoding FindEncoding(string fileName)
@@ -89,17 +103,14 @@ namespace EncodingConverter.ViewModel
             {
                 file.Read(bom, 0, 4);
             }
-
             // Analyze the BOM
-            if (bom[0] == 0x2b && bom[1] == 0x2f && bom[2] == 0x76) return Encoding.UTF7;
+            //if (bom[0] == 0x2b && bom[1] == 0x2f && bom[2] == 0x76) return Encoding.UTF7;
             if (bom[0] == 0xef && bom[1] == 0xbb && bom[2] == 0xbf) return Encoding.UTF8;
+            //if (bom[0] == 0 && bom[1] == 0 && bom[2] == 0xfe && bom[3] == 0xff) return Encoding.UTF32;
             if (bom[0] == 0xff && bom[1] == 0xfe) return Encoding.Unicode; //UTF-16LE
             if (bom[0] == 0xfe && bom[1] == 0xff) return Encoding.BigEndianUnicode; //UTF-16BE
-            if (bom[0] == 0 && bom[1] == 0 && bom[2] == 0xfe && bom[3] == 0xff) return Encoding.UTF32;
-            return Encoding.ASCII;
+
+            return null;
         }
-
-
-
     }
 }

@@ -106,6 +106,15 @@ namespace EncodingConverter.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unicode (UTF-32).
+        /// </summary>
+        internal static string UTF32Encoding {
+            get {
+                return ResourceManager.GetString("UTF32Encoding", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unicode (UTF-7).
         /// </summary>
         internal static string UTF7Encoding {
