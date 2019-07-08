@@ -70,10 +70,14 @@ namespace EncodingConverter.ViewModel
         private void InitializeEncodingList()
         {
             EncodingCollection = new ObservableCollection<EncodingModel>();
+
             AddEncoding(Encoding.UTF8);
             AddEncoding(Encoding.Unicode);
             AddEncoding(Encoding.BigEndianUnicode);
             AddEncoding(Encoding.UTF32);
+            AddEncoding(Encoding.GetEncoding("utf-32BE"));
+            AddEncoding(Encoding.GetEncoding("Windows-1252")); 
+            //AddEncoding(new UTF32Encoding(true /*bigEndian*/, true /*byteOrderMark*/));
 
             //foreach (EncodingInfo ei in Encoding.GetEncodings())
             //{
