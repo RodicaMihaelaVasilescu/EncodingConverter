@@ -1,5 +1,4 @@
 ﻿using EncodingConverter.Model;
-using EncodingConverter.Properties;
 using GalaSoft.MvvmLight.Command;
 using System;
 using System.Collections.ObjectModel;
@@ -16,6 +15,7 @@ namespace EncodingConverter.ViewModel
         private readonly string fileName;
         private Encoding fileEncoding;
         private EncodingModel _selectedEncoding;
+        private bool _isConvertButtonEnabled;
 
         public string CurrentEncodingText { get; set; }
         public ObservableCollection<EncodingModel> EncodingCollection { get; set; }
@@ -29,7 +29,19 @@ namespace EncodingConverter.ViewModel
             {
                 if (_selectedEncoding == value) return;
                 _selectedEncoding = value;
+                IsConvertButtonEnabled = SelectedEncoding.EncodingName == fileEncoding.EncodingName;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("SelectedEncoding"));
+            }
+        }
+
+        public bool IsConvertButtonEnabled
+        {
+            get { return _isConvertButtonEnabled; }
+            set
+            {
+                if (_isConvertButtonEnabled == value) return;
+                _isConvertButtonEnabled = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsConvertButtonEnabled"));
             }
         }
         public Action CloseAction { get; set; }
@@ -57,16 +69,24 @@ namespace EncodingConverter.ViewModel
 
         private void InitializeEncodingList()
         {
-            EncodingCollection = new ObservableCollection<EncodingModel>
-            {
-                //new EncodingModel { EncodingName = Resources.UTF7Encoding, Encoding = Encoding.UTF7 },
-                new EncodingModel { EncodingName = Resources.UTF8Encoding, Encoding = Encoding.UTF8 },
-                new EncodingModel { EncodingName = Resources.UnicodeEncoding, Encoding = Encoding.Unicode },
-                new EncodingModel { EncodingName = Resources.BigEndianUnicodeEncoding, Encoding = Encoding.BigEndianUnicode },
-                //new EncodingModel { EncodingName = Resources.UTF32Encoding, Encoding = Encoding.UTF32 }
-            };
+            EncodingCollection = new ObservableCollection<EncodingModel>();
+            AddEncoding(Encoding.UTF8);
+            AddEncoding(Encoding.Unicode);
+            AddEncoding(Encoding.BigEndianUnicode);
+            AddEncoding(Encoding.UTF32);
 
-            SelectedEncoding = EncodingCollection.FirstOrDefault(e => e.Encoding == fileEncoding);
+            //foreach (EncodingInfo ei in Encoding.GetEncodings())
+            //{
+            //    AddEncoding(ei.GetEncoding());
+            //}
+
+            EncodingCollection = new ObservableCollection<EncodingModel>(EncodingCollection.OrderBy(e => e.EncodingName));
+
+            SelectedEncoding = EncodingCollection.FirstOrDefault(e => e.Encoding.EncodingName == fileEncoding.EncodingName);
+        }
+        private void AddEncoding(Encoding encoding)
+        {
+            EncodingCollection.Add(new EncodingModel { EncodingName = encoding.EncodingName, Encoding = encoding });
         }
 
         private void CancelCommandExecute()
@@ -90,27 +110,33 @@ namespace EncodingConverter.ViewModel
             StreamReader streamReader = new StreamReader(fileName);
             string fileContent = streamReader.ReadToEnd();
             streamReader.Close();
-
-            StreamWriter streamWriter = new StreamWriter(fileName, false, SelectedEncoding.Encoding);
-            streamWriter.Write(fileContent);
-            streamWriter.Close();
+            File.WriteAllText(fileName, fileContent, SelectedEncoding.Encoding);
         }
 
         private Encoding FindEncoding(string fileName)
         {
-            var bom = new byte[4];
-            using (FileStream file = new FileStream(fileName, FileMode.Open, FileAccess.Read))
+            using (var reader = new StreamReader(fileName, Encoding.Default, true))
             {
-                file.Read(bom, 0, 4);
+                if (reader.Peek() >= 0)
+                {
+                    reader.Read();
+                }
+                return reader.CurrentEncoding;
             }
-            // Analyze the BOM
-            //if (bom[0] == 0x2b && bom[1] == 0x2f && bom[2] == 0x76) return Encoding.UTF7;
-            if (bom[0] == 0xef && bom[1] == 0xbb && bom[2] == 0xbf) return Encoding.UTF8;
-            //if (bom[0] == 0 && bom[1] == 0 && bom[2] == 0xfe && bom[3] == 0xff) return Encoding.UTF32;
-            if (bom[0] == 0xff && bom[1] == 0xfe) return Encoding.Unicode; //UTF-16LE
-            if (bom[0] == 0xfe && bom[1] == 0xff) return Encoding.BigEndianUnicode; //UTF-16BE
 
-            return null;
+            //var bom = new byte[4];
+            //using (FileStream file = new FileStream(fileName, FileMode.Open, FileAccess.Read))
+            //{
+            //    file.Read(bom, 0, 4);
+            //}
+            //// Analyze the BOM
+            ////if (bom[0] == 0x2b && bom[1] == 0x2f && bom[2] == 0x76) return Encoding.UTF7;
+            //if (bom[0] == 0xef && bom[1] == 0xbb && bom[2] == 0xbf) return Encoding.UTF8;
+            ////if (bom[0] == 0 && bom[1] == 0 && bom[2] == 0xfe && bom[3] == 0xff) return Encoding.UTF32;
+            //if (bom[0] == 0xff && bom[1] == 0xfe) return Encoding.Unicode; //UTF-16LE
+            //if (bom[0] == 0xfe && bom[1] == 0xff) return Encoding.BigEndianUnicode; //UTF-16BE
+
+            //return null;
         }
     }
 }
