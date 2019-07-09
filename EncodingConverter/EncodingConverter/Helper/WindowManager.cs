@@ -21,7 +21,7 @@ namespace EncodingConverter.Helper
             window.ResizeMode = ResizeMode.NoResize;
             window.WindowStartupLocation = WindowStartupLocation.CenterScreen;
 
-            var controlAssembly = Assembly.Load(Resources.ProjectName);
+            var controlAssembly = Assembly.Load("EncodingConverter");
             var controlType = controlAssembly.GetType(controlPath);
             var newControl = Activator.CreateInstance(controlType) as UserControl;
             newControl.DataContext = viewModel;

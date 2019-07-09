@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Globalization;
 using System.IO;
@@ -100,7 +101,7 @@ namespace EncodingConverter
             string solutionDir = Path.GetDirectoryName(dte.Solution.FullName);
 
             var encodingConverterViewModel = new EncodingConverterViewModel(GetSelectedFile(dte));
-            encodingConverterViewModel.LoadData();
+            await encodingConverterViewModel.LoadData();
 
             var EncodingConverterWindow = WindowManager.CreateElementWindow(encodingConverterViewModel, "Encoding Converter", "EncodingConverter.View.EncodingConverterControl");
 
@@ -109,16 +110,16 @@ namespace EncodingConverter
                 encodingConverterViewModel.CloseAction = () => EncodingConverterWindow.Close();
             }
 
-            EncodingConverterWindow.Show();
+            EncodingConverterWindow.ShowDialog();
         }
-        private string GetSelectedFile(DTE2 dte)
+        private List<string> GetSelectedFile(DTE2 dte)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
             Array items = (Array)dte.ToolWindows.SolutionExplorer.SelectedItems;
             var selectedFiles = from item in items.Cast<UIHierarchyItem>()
                                 let pi = item.Object as ProjectItem
                                 select pi.FileNames[1];
-            return selectedFiles.ElementAt(0);
+            return selectedFiles.ToList();
         }
 
     }
