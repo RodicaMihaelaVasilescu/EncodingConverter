@@ -61,69 +61,6 @@ namespace EncodingConverter.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ASCII.
-        /// </summary>
-        internal static string AsciiEncoding {
-            get {
-                return ResourceManager.GetString("AsciiEncoding", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to BigEndianUnicode.
-        /// </summary>
-        internal static string BigEndianUnicodeEncoding {
-            get {
-                return ResourceManager.GetString("BigEndianUnicodeEncoding", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to EncodingConverter.
-        /// </summary>
-        internal static string ProjectName {
-            get {
-                return ResourceManager.GetString("ProjectName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Unicode.
-        /// </summary>
-        internal static string UnicodeEncoding {
-            get {
-                return ResourceManager.GetString("UnicodeEncoding", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Unicode (UTF-16).
-        /// </summary>
-        internal static string UTF16Encoding {
-            get {
-                return ResourceManager.GetString("UTF16Encoding", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Unicode (UTF-32).
-        /// </summary>
-        internal static string UTF32Encoding {
-            get {
-                return ResourceManager.GetString("UTF32Encoding", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Unicode (UTF-7).
-        /// </summary>
-        internal static string UTF7Encoding {
-            get {
-                return ResourceManager.GetString("UTF7Encoding", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Unicode (UTF-8).
         /// </summary>
         internal static string UTF8Encoding {

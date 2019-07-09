@@ -117,28 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AsciiEncoding" xml:space="preserve">
-    <value>ASCII</value>
-  </data>
-  <data name="BigEndianUnicodeEncoding" xml:space="preserve">
-    <value>BigEndianUnicode</value>
-  </data>
-  <data name="ProjectName" xml:space="preserve">
-    <value>EncodingConverter</value>
-  </data>
-  <data name="UnicodeEncoding" xml:space="preserve">
-    <value>Unicode</value>
-  </data>
-  <data name="UTF16Encoding" xml:space="preserve">
-    <value>Unicode (UTF-16)</value>
-  </data>
-  <data name="UTF7Encoding" xml:space="preserve">
-    <value>Unicode (UTF-7)</value>
-  </data>
   <data name="UTF8Encoding" xml:space="preserve">
     <value>Unicode (UTF-8)</value>
-  </data>
-  <data name="UTF32Encoding" xml:space="preserve">
-    <value>Unicode (UTF-32)</value>
   </data>
 </root>
