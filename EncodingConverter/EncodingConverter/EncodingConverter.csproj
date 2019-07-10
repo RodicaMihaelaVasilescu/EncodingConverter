@@ -51,6 +51,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Command\RelayCommand.cs" />
     <Compile Include="Converter\BooleanToEnableConverter.cs" />
     <Compile Include="EncodingConverter.cs" />
     <Compile Include="EncodingConverterPackage.cs" />
@@ -89,9 +90,6 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.SDK" Version="16.0.200" ExcludeAssets="runtime" />
     <PackageReference Include="Microsoft.VSSDK.BuildTools" Version="16.1.3132" />
-    <PackageReference Include="MvvmLightLibs">
-      <Version>5.4.1.1</Version>
-    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <VSCTCompile Include="EncodingConverterPackage.vsct">
